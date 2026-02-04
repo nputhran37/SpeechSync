@@ -1,11 +1,12 @@
 import React from 'react';
+import { Users, BarChart3, TrendingUp, Star } from 'lucide-react';
 import './Stats.css';
 
 const statsData = [
-    { label: 'Patients Supported', value: '10k+', icon: '👥' },
-    { label: 'Sessions Tracked', value: '500k+', icon: '📊' },
-    { label: 'Improvement Consistency', value: '92%', icon: '📈' },
-    { label: 'Therapist Satisfaction', value: '4.9/5', icon: '⭐' }
+    { label: 'Patients Supported', value: '10k+', icon: <Users size={32} /> },
+    { label: 'Sessions Tracked', value: '500k+', icon: <BarChart3 size={32} /> },
+    { label: 'Improvement Consistency', value: '92%', icon: <TrendingUp size={32} /> },
+    { label: 'Therapist Satisfaction', value: '4.9/5', icon: <Star size={32} /> }
 ];
 
 const Stats = () => {

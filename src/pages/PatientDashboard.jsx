@@ -4,7 +4,7 @@ import {
     User, Mic, Play, Calendar, Award,
     TrendingUp, Activity, MessageSquare,
     Brain, LogOut, Bell, Settings, ArrowRight,
-    Shield, Heart, CheckCircle2
+    Shield, Heart, CheckCircle2, Flame
 } from 'lucide-react';
 import {
     LineChart, Line, XAxis, YAxis, CartesianGrid,
@@ -67,7 +67,7 @@ const PatientDashboard = () => {
                 <header className="p-header">
                     <div className="p-welcome">
                         <h1>Hi, {name}!</h1>
-                        <p>Total Practice Streak: <strong>12 Days</strong> 🔥</p>
+                        <p>Total Practice Streak: <strong>12 Days</strong> <Flame size={18} className="streak-icon" style={{ display: 'inline', verticalAlign: 'middle', color: '#f59e0b' }} /></p>
                     </div>
                     <div className="p-header-actions">
                         <button className="p-icon-btn"><Bell size={20} /></button>

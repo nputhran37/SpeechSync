@@ -2,7 +2,8 @@ import React from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import {
     Users, Activity, Brain, TrendingUp, Calendar, Search,
-    Bell, Settings, LogOut, ChevronRight, MessageSquare, ClipboardList, Plus
+    Bell, Settings, LogOut, ChevronRight, MessageSquare, ClipboardList, Plus,
+    Hand
 } from 'lucide-react';
 import {
     BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip,
@@ -47,6 +48,11 @@ const TherapistDashboard = () => {
     const avgImprovement = isDemo ? "76%" : "0%";
     const scheduledSessions = isDemo ? 8 : 0;
 
+    const nameParts = name.split(' ');
+    const greetingName = (nameParts.length > 1 && ['Dr.', 'Dr', 'Mr.', 'Mr', 'Ms.', 'Ms', 'Mrs.', 'Mrs'].includes(nameParts[0]))
+        ? `${nameParts[0]} ${nameParts[1]}`
+        : nameParts[0];
+
     return (
         <div className="dashboard-container">
             {/* Sidebar */}
@@ -89,7 +95,7 @@ const TherapistDashboard = () => {
                 <div className="dashboard-content">
                     <div className="content-intro">
                         <div className="intro-text">
-                            <h2>Welcome {isDemo ? 'back' : ''}, {name.split(' ')[0]}</h2>
+                            <h2>Welcome {isDemo ? 'back' : ''}, {greetingName}</h2>
                             <p>{isDemo ? `Everything looks good. You have ${scheduledSessions} sessions scheduled for today.` : 'Welcome to your new dashboard. Start by adding your first patient.'}</p>
                         </div>
                         <Link to="/dashboard/therapist/patients/add" className="add-patient-btn">
@@ -247,7 +253,7 @@ const TherapistDashboard = () => {
                     {!isDemo && (
                         <div className="empty-state-welcome">
                             <div className="welcome-card">
-                                <div className="welcome-icon">👋</div>
+                                <div className="welcome-icon"><Hand size={48} strokeWidth={1.5} /></div>
                                 <h3>Let's get started with your first patient</h3>
                                 <p>To start tracking progress and using AI analytics, you need to add your patients and record their first baseline session.</p>
                                 <Link to="/dashboard/therapist/patients/add" className="btn btn-primary add-first-patient">

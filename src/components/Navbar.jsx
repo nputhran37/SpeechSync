@@ -24,6 +24,7 @@ const Navbar = () => {
           <a href="#platform" className="nav-link">Platform</a>
           <a href="#how-it-works" className="nav-link">How It Works</a>
           <a href="#reviews" className="nav-link">Reviews</a>
+          <Link to="/portal" className="nav-link login-link">Login</Link>
           <Link to="/get-started" className="btn btn-primary">Get Started</Link>
         </div>
       </div>

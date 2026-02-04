@@ -32,9 +32,14 @@ const PortalSelection = () => {
                         <li>Assign AI-suggested exercises</li>
                         <li>View detailed progress dashboards</li>
                     </ul>
-                    <Link to="/signup/therapist" className="portal-btn therapist-btn">
-                        Sign Up as a Therapist <span>→</span>
-                    </Link>
+                    <div className="portal-actions">
+                        <Link to="/signup/therapist" className="portal-btn therapist-btn">
+                            Sign Up <span>→</span>
+                        </Link>
+                        <Link to="/login/therapist" className="portal-btn therapist-btn-outline">
+                            Login <span>→</span>
+                        </Link>
+                    </div>
                 </div>
 
                 {/* Patient Portal */}

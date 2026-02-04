@@ -411,6 +411,69 @@
     }
 }
 
+.empty-chart-msg,
+.empty-summary-msg {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #94a3b8;
+    font-size: 0.95rem;
+    font-style: italic;
+    text-align: center;
+    min-height: 200px;
+    background: rgba(248, 250, 252, 0.5);
+    border: 2px dashed #e2e8f0;
+    border-radius: 12px;
+    padding: 2rem;
+}
+
+.empty-summary-msg {
+    min-height: 150px;
+}
+
+.empty-state-welcome {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 4rem 0;
+}
+
+.welcome-card {
+    background: white;
+    padding: 4rem 3rem;
+    border-radius: 32px;
+    text-align: center;
+    max-width: 600px;
+    width: 100%;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    border: 1px solid #f1f5f9;
+}
+
+.welcome-icon {
+    font-size: 4rem;
+    margin-bottom: 2rem;
+}
+
+.welcome-card h3 {
+    font-size: 2rem;
+    color: #1e293b;
+    margin-bottom: 1rem;
+    font-family: 'Outfit', sans-serif;
+}
+
+.welcome-card p {
+    color: #64748b;
+    font-size: 1.1rem;
+    margin-bottom: 2.5rem;
+    line-height: 1.6;
+}
+
+.add-first-patient {
+    padding: 1rem 2.5rem;
+    font-size: 1.1rem;
+}
+
 @media (max-width: 992px) {
     .dashboard-sidebar {
         display: none;

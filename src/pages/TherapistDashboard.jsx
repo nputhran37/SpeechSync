@@ -36,7 +36,16 @@ const statusData = [
 
 const TherapistDashboard = () => {
     const location = useLocation();
-    const { name = 'Dr. Rajesh Gupta', clinic = 'Arogya Speech Center' } = location.state || {};
+    const { name = 'Dr. Rajesh Gupta', clinic = 'Arogya Speech Center', isDemo = false } = location.state || {};
+
+    // Mock data for demo, otherwise empty
+    const currentPerformanceData = isDemo ? performanceData : [];
+    const currentExerciseData = isDemo ? exerciseData : [];
+    const currentStatusData = isDemo ? statusData : [];
+    const totalPatients = isDemo ? "124" : "0";
+    const activeSessions = isDemo ? "48" : "0";
+    const avgImprovement = isDemo ? "76%" : "0%";
+    const scheduledSessions = isDemo ? 8 : 0;
 
     return (
         <div className="dashboard-container">
@@ -45,10 +54,14 @@ const TherapistDashboard = () => {
                 <div className="sidebar-logo">S<span>peechSync</span></div>
                 <nav className="sidebar-nav">
                     <Link to="/dashboard/therapist" className="nav-item active"><ClipboardList size={20} /> Overview</Link>
-                    <Link to="/dashboard/therapist/patients" className="nav-item"><Users size={20} /> Patients</Link>
-                    <a href="#" className="nav-item"><Calendar size={20} /> Schedule</a>
-                    <a href="#" className="nav-item"><Brain size={20} /> AI Analysis</a>
-                    <a href="#" className="nav-item"><Bell size={20} /> Notifications</a>
+                    {isDemo && (
+                        <>
+                            <Link to="/dashboard/therapist/patients" className="nav-item"><Users size={20} /> Patients</Link>
+                            <a href="#" className="nav-item"><Calendar size={20} /> Schedule</a>
+                            <a href="#" className="nav-item"><Brain size={20} /> AI Analysis</a>
+                            <a href="#" className="nav-item"><Bell size={20} /> Notifications</a>
+                        </>
+                    )}
                     <div className="nav-divider"></div>
                     <a href="#" className="nav-item"><Settings size={20} /> Settings</a>
                     <Link to="/" className="nav-item logout"><LogOut size={20} /> Logout</Link>
@@ -76,8 +89,8 @@ const TherapistDashboard = () => {
                 <div className="dashboard-content">
                     <div className="content-intro">
                         <div className="intro-text">
-                            <h2>Welcome back, {name.split(' ')[0]}</h2>
-                            <p>Everything looks good. You have 8 sessions scheduled for today.</p>
+                            <h2>Welcome {isDemo ? 'back' : ''}, {name.split(' ')[0]}</h2>
+                            <p>{isDemo ? `Everything looks good. You have ${scheduledSessions} sessions scheduled for today.` : 'Welcome to your new dashboard. Start by adding your first patient.'}</p>
                         </div>
                         <Link to="/dashboard/therapist/patients/add" className="add-patient-btn">
                             <Plus size={18} /> Add New Patient
@@ -89,143 +102,160 @@ const TherapistDashboard = () => {
                         <div className="stat-card-mini">
                             <div className="stat-info">
                                 <span className="stat-label">Total Patients</span>
-                                <span className="stat-value">124</span>
-                                <span className="stat-change positive">+12% from last month</span>
+                                <span className="stat-value">{totalPatients}</span>
+                                {isDemo && <span className="stat-change positive">+12% from last month</span>}
                             </div>
                             <div className="stat-icon-wrapper blue"><Users size={24} /></div>
                         </div>
                         <div className="stat-card-mini">
                             <div className="stat-info">
                                 <span className="stat-label">Active Sessions</span>
-                                <span className="stat-value">48</span>
-                                <span className="stat-change">6 pending review</span>
+                                <span className="stat-value">{activeSessions}</span>
+                                {isDemo && <span className="stat-change">6 pending review</span>}
                             </div>
                             <div className="stat-icon-wrapper teal"><Activity size={24} /></div>
                         </div>
                         <div className="stat-card-mini">
                             <div className="stat-info">
                                 <span className="stat-label">Avg. Improvement</span>
-                                <span className="stat-value">76%</span>
-                                <span className="stat-change positive">+5.4% improvement</span>
+                                <span className="stat-value">{avgImprovement}</span>
+                                {isDemo && <span className="stat-change positive">+5.4% improvement</span>}
                             </div>
                             <div className="stat-icon-wrapper green"><TrendingUp size={24} /></div>
                         </div>
                     </div>
 
                     {/* Analytics Section - Row 1 */}
-                    <div className="analytics-section">
-                        <div className="chart-container main-chart">
-                            <div className="chart-header">
-                                <h3>Weekly Therapy Performance</h3>
-                                <div className="chart-legend">
-                                    <span className="legend-dot sessions"></span> Sessions
-                                </div>
-                            </div>
-                            <div className="chart-wrapper">
-                                <ResponsiveContainer width="100%" height={300}>
-                                    <AreaChart data={performanceData}>
-                                        <defs>
-                                            <linearGradient id="colorSessions" x1="0" y1="0" x2="0" y2="1">
-                                                <stop offset="5%" stopColor="var(--primary)" stopOpacity={0.3} />
-                                                <stop offset="95%" stopColor="var(--primary)" stopOpacity={0} />
-                                            </linearGradient>
-                                        </defs>
-                                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
-                                        <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#94a3b8', fontSize: 12 }} />
-                                        <YAxis axisLine={false} tickLine={false} tick={{ fill: '#94a3b8', fontSize: 12 }} />
-                                        <Tooltip
-                                            contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1)' }}
-                                        />
-                                        <Area
-                                            type="monotone"
-                                            dataKey="sessions"
-                                            stroke="var(--primary)"
-                                            fillOpacity={1}
-                                            fill="url(#colorSessions)"
-                                            strokeWidth={3}
-                                        />
-                                    </AreaChart>
-                                </ResponsiveContainer>
-                            </div>
-                        </div>
-
-                        <div className="chart-container secondary-chart">
-                            <div className="chart-header">
-                                <h3>Exercise Distribution</h3>
-                            </div>
-                            <div className="chart-wrapper">
-                                <ResponsiveContainer width="100%" height={300}>
-                                    <BarChart data={exerciseData} layout="vertical">
-                                        <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#f1f5f9" />
-                                        <XAxis type="number" hide />
-                                        <YAxis dataKey="name" type="category" axisLine={false} tickLine={false} tick={{ fill: '#475569', fontSize: 12 }} width={80} />
-                                        <Tooltip cursor={{ fill: 'transparent' }} contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1)' }} />
-                                        <Bar dataKey="count" fill="var(--primary)" radius={[0, 10, 10, 0]} barSize={20} />
-                                    </BarChart>
-                                </ResponsiveContainer>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Analytics Section - Row 2 */}
-                    <div className="analytics-section bottom-row">
-                        <div className="chart-container">
-                            <div className="chart-header">
-                                <h3>Patient Status</h3>
-                            </div>
-                            <div className="chart-wrapper pie-wrapper">
-                                <ResponsiveContainer width="100%" height={250}>
-                                    <PieChart>
-                                        <Pie
-                                            data={statusData}
-                                            cx="50%"
-                                            cy="50%"
-                                            innerRadius={60}
-                                            outerRadius={80}
-                                            paddingAngle={8}
-                                            dataKey="value"
-                                        >
-                                            {statusData.map((entry, index) => (
-                                                <Cell key={`cell-${index}`} fill={entry.color} />
-                                            ))}
-                                        </Pie>
-                                        <Tooltip />
-                                        <Legend verticalAlign="bottom" height={36} />
-                                    </PieChart>
-                                </ResponsiveContainer>
-                            </div>
-                        </div>
-
-                        <div className="ai-summary-container">
-                            <div className="summary-header">
-                                <h3><Brain size={18} /> AI Progress Summaries</h3>
-                                <Link to="#">View All <ChevronRight size={16} /></Link>
-                            </div>
-                            <div className="summary-list">
-                                <div className="summary-item">
-                                    <div className="summary-patient-avatar">AV</div>
-                                    <div className="summary-details">
-                                        <p className="summary-text"><strong>Arjun V.</strong> showed significant progress in articulation of 's' sounds. Recommend increasing difficulty.</p>
-                                        <span className="summary-tag high">High Improvement</span>
+                    {isDemo && (
+                        <>
+                            <div className="analytics-section">
+                                <div className="chart-container main-chart">
+                                    <div className="chart-header">
+                                        <h3>Weekly Therapy Performance</h3>
+                                        <div className="chart-legend">
+                                            <span className="legend-dot sessions"></span> Sessions
+                                        </div>
+                                    </div>
+                                    <div className="chart-wrapper">
+                                        <ResponsiveContainer width="100%" height={300}>
+                                            <AreaChart data={currentPerformanceData}>
+                                                <defs>
+                                                    <linearGradient id="colorSessions" x1="0" y1="0" x2="0" y2="1">
+                                                        <stop offset="5%" stopColor="var(--primary)" stopOpacity={0.3} />
+                                                        <stop offset="95%" stopColor="var(--primary)" stopOpacity={0} />
+                                                    </linearGradient>
+                                                </defs>
+                                                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                                                <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#94a3b8', fontSize: 12 }} />
+                                                <YAxis axisLine={false} tickLine={false} tick={{ fill: '#94a3b8', fontSize: 12 }} />
+                                                <Tooltip
+                                                    contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1)' }}
+                                                />
+                                                <Area
+                                                    type="monotone"
+                                                    dataKey="sessions"
+                                                    stroke="var(--primary)"
+                                                    fillOpacity={1}
+                                                    fill="url(#colorSessions)"
+                                                    strokeWidth={3}
+                                                />
+                                            </AreaChart>
+                                        </ResponsiveContainer>
                                     </div>
                                 </div>
-                                <div className="summary-item">
-                                    <div className="summary-patient-avatar">IK</div>
-                                    <div className="summary-details">
-                                        <p className="summary-text"><strong>Isha K.</strong> completed 5/5 home exercises. Consistency is improving.</p>
-                                        <span className="summary-tag med">Consistent</span>
+
+                                <div className="chart-container secondary-chart">
+                                    <div className="chart-header">
+                                        <h3>Exercise Distribution</h3>
                                     </div>
-                                </div>
-                                <div className="summary-item">
-                                    <div className="summary-patient-avatar">RM</div>
-                                    <div className="summary-details">
-                                        <p className="summary-text"><strong>Rayan M.</strong> missed 2 sessions. Consider scheduling a follow-up call.</p>
-                                        <span className="summary-tag low">Needs Attention</span>
+                                    <div className="chart-wrapper">
+                                        <ResponsiveContainer width="100%" height={300}>
+                                            <BarChart data={currentExerciseData} layout="vertical">
+                                                <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#f1f5f9" />
+                                                <XAxis type="number" hide />
+                                                <YAxis dataKey="name" type="category" axisLine={false} tickLine={false} tick={{ fill: '#475569', fontSize: 12 }} width={80} />
+                                                <Tooltip cursor={{ fill: 'transparent' }} contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1)' }} />
+                                                <Bar dataKey="count" fill="var(--primary)" radius={[0, 10, 10, 0]} barSize={20} />
+                                            </BarChart>
+                                        </ResponsiveContainer>
                                     </div>
                                 </div>
                             </div>
+
+                            {/* Analytics Section - Row 2 */}
+                            <div className="analytics-section bottom-row">
+                                <div className="chart-container">
+                                    <div className="chart-header">
+                                        <h3>Patient Status</h3>
+                                    </div>
+                                    <div className="chart-wrapper pie-wrapper">
+                                        <ResponsiveContainer width="100%" height={250}>
+                                            <PieChart>
+                                                <Pie
+                                                    data={currentStatusData}
+                                                    cx="50%"
+                                                    cy="50%"
+                                                    innerRadius={60}
+                                                    outerRadius={80}
+                                                    paddingAngle={8}
+                                                    dataKey="value"
+                                                >
+                                                    {currentStatusData.map((entry, index) => (
+                                                        <Cell key={`cell-${index}`} fill={entry.color} />
+                                                    ))}
+                                                </Pie>
+                                                <Tooltip />
+                                                <Legend verticalAlign="bottom" height={36} />
+                                            </PieChart>
+                                        </ResponsiveContainer>
+                                    </div>
+                                </div>
+
+                                <div className="ai-summary-container">
+                                    <div className="summary-header">
+                                        <h3><Brain size={18} /> AI Progress Summaries</h3>
+                                        <Link to="#">View All <ChevronRight size={16} /></Link>
+                                    </div>
+                                    <div className="summary-list">
+                                        <div className="summary-item">
+                                            <div className="summary-patient-avatar">AV</div>
+                                            <div className="summary-details">
+                                                <p className="summary-text"><strong>Arjun V.</strong> showed significant progress in articulation of 's' sounds. Recommend increasing difficulty.</p>
+                                                <span className="summary-tag high">High Improvement</span>
+                                            </div>
+                                        </div>
+                                        <div className="summary-item">
+                                            <div className="summary-patient-avatar">IK</div>
+                                            <div className="summary-details">
+                                                <p className="summary-text"><strong>Isha K.</strong> completed 5/5 home exercises. Consistency is improving.</p>
+                                                <span className="summary-tag med">Consistent</span>
+                                            </div>
+                                        </div>
+                                        <div className="summary-item">
+                                            <div className="summary-patient-avatar">RM</div>
+                                            <div className="summary-details">
+                                                <p className="summary-text"><strong>Rayan M.</strong> missed 2 sessions. Consider scheduling a follow-up call.</p>
+                                                <span className="summary-tag low">Needs Attention</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </>
+                    )}
+
+                    {!isDemo && (
+                        <div className="empty-state-welcome">
+                            <div className="welcome-card">
+                                <div className="welcome-icon">👋</div>
+                                <h3>Let's get started with your first patient</h3>
+                                <p>To start tracking progress and using AI analytics, you need to add your patients and record their first baseline session.</p>
+                                <Link to="/dashboard/therapist/patients/add" className="btn btn-primary add-first-patient">
+                                    <Plus size={20} /> Add First Patient
+                                </Link>
+                            </div>
                         </div>
-                    </div>
+                    )}
                 </div>
             </main>
         </div>

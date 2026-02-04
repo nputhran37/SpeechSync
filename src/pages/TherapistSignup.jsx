@@ -33,7 +33,8 @@ const TherapistSignup = () => {
         navigate('/dashboard/therapist', {
             state: {
                 name: formData.fullName,
-                clinic: formData.clinicName
+                clinic: formData.clinicName,
+                isDemo: false
             }
         });
     };

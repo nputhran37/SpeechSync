@@ -4,7 +4,7 @@ import {
     User, Mic, Play, Calendar, Award,
     TrendingUp, Activity, MessageSquare,
     Brain, LogOut, Bell, Settings, ArrowRight,
-    Shield, Heart, CheckCircle2, Flame
+    Shield, Heart, CheckCircle2, Flame, X, FileText
 } from 'lucide-react';
 import {
     LineChart, Line, XAxis, YAxis, CartesianGrid,
@@ -27,6 +27,11 @@ const PatientDashboard = () => {
     const { loginId = 'SS-724915', name = 'Arjun Verma' } = location.state || {};
     const [isRecordingBaseline, setIsRecordingBaseline] = useState(false);
     const [baselineStep, setBaselineStep] = useState(0);
+    const [showReport, setShowReport] = useState(false);
+
+    const handleDownloadPDF = () => {
+        window.print();
+    };
 
     const baselineTasks = [
         "Please say 'Ahhhhh' for as long as you can.",
@@ -227,11 +232,87 @@ const PatientDashboard = () => {
                                     </div>
                                 </div>
                             </div>
-                            <button className="p-full-report-btn">View Full AI Analysis <ArrowRight size={16} /></button>
+                            <button className="p-full-report-btn" onClick={() => setShowReport(true)}>View Full AI Analysis <ArrowRight size={16} /></button>
                         </div>
                     </div>
                 </div>
             </main>
+
+            {/* AI Report Modal */}
+            {showReport && (
+                <div className="report-overlay" onClick={() => setShowReport(false)}>
+                    <div className="report-modal" onClick={(e) => e.stopPropagation()}>
+                        <div className="report-header">
+                            <div className="report-title">
+                                <Brain size={24} className="text-primary" />
+                                <div>
+                                    <h2>AI Speech Analysis Report</h2>
+                                    <p>Patient ID: {loginId} | Generated on: {new Date().toLocaleDateString()}</p>
+                                </div>
+                            </div>
+                            <div className="report-actions no-print">
+                                <button className="btn-icon" onClick={handleDownloadPDF} title="Download PDF"><FileText size={20} /></button>
+                                <button className="btn-icon" onClick={() => setShowReport(false)} title="Close"><X size={20} /></button>
+                            </div>
+                        </div>
+
+                        <div className="report-body">
+                            <div className="report-section">
+                                <h3>Executive Summary</h3>
+                                <p>Overall speech clarity has shown a <strong>15% improvement</strong> over the last 14 days. The patient is responding well to 'S' sound articulation exercises with higher consistency in morning sessions.</p>
+                            </div>
+
+                            <div className="report-grid">
+                                <div className="report-card">
+                                    <h4>Accuracy Metrics</h4>
+                                    <div className="metric-row">
+                                        <span>Articulation</span>
+                                        <div className="progress-bar"><div className="progress" style={{ width: '82%' }}></div></div>
+                                        <span>82%</span>
+                                    </div>
+                                    <div className="metric-row">
+                                        <span>Fluency</span>
+                                        <div className="progress-bar"><div className="progress" style={{ width: '65%' }}></div></div>
+                                        <span>65%</span>
+                                    </div>
+                                    <div className="metric-row">
+                                        <span>Vocal Range</span>
+                                        <div className="progress-bar"><div className="progress" style={{ width: '78%' }}></div></div>
+                                        <span>78%</span>
+                                    </div>
+                                </div>
+
+                                <div className="report-card">
+                                    <h4>Sound Processing Breakdown</h4>
+                                    <ul className="sound-list">
+                                        <li><strong>'S' Sounds:</strong> Significant improvement (80% accuracy)</li>
+                                        <li><strong>'R' Sounds:</strong> Requires focus (45% accuracy)</li>
+                                        <li><strong>'TH' Sounds:</strong> Developing consistency (60% accuracy)</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div className="report-section recommendations">
+                                <h3>AI-Generated Recommendations</h3>
+                                <ul>
+                                    <li>Increase repetition of 'S' articulation exercises to 20 reps per session.</li>
+                                    <li>Focus on 'R' sound lip placement during the afternoon warm-ups.</li>
+                                    <li>Maintain the current 12-day practice streak to solidify progress.</li>
+                                </ul>
+                            </div>
+
+                            <div className="report-footer">
+                                <div className="footer-notes">
+                                    <p>Note: This is an AI-assisted report. Please consult your specialist, Dr. Rajesh Gupta, for medical interpretation.</p>
+                                </div>
+                                <div className="report-branding">
+                                    <div className="p-logo">S<span>peechSync</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
